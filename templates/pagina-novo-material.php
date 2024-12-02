@@ -1,11 +1,5 @@
 <?php 
 
-if (!gma_verificar_licenca_ativa()) {
-    echo '<div class="notice notice-error"><p>Licença inválida ou expirada. Por favor, <a href="' . 
-         admin_url('admin.php?page=gma-licenca') . 
-         '">ative sua licença</a> para continuar usando o plugin.</p></div>';
-    return;
-}
 if (!defined('ABSPATH')) exit;
 
 // Carrega o Media Uploader
