@@ -386,4 +386,3 @@ function gma_pagina_licenca() {
     </div>
     <?php
 }
-

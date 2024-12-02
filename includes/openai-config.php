@@ -77,5 +77,4 @@ function gma_get_openai_suggestions($prompt) {
         return false;
     }
     
-    // Resto do código existente...
 }

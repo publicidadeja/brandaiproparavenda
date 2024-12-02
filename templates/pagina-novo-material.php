@@ -1,5 +1,4 @@
 <?php 
-// Adicione no início de cada arquivo de template (páginas admin)
 
 if (!gma_verificar_licenca_ativa()) {
     echo '<div class="notice notice-error"><p>Licença inválida ou expirada. Por favor, <a href="' . 
@@ -448,4 +447,3 @@ jQuery(document).ready(function($) {
     });
 });
 </script>
-

@@ -1067,5 +1067,3 @@ function gma_verificar_licenca($codigo_licenca) {
     set_transient($cache_key, $status, HOUR_IN_SECONDS);
     return $status;
 }
-
-

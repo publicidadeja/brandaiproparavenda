@@ -1,5 +1,5 @@
-
 <?php
+
 if (!defined('ABSPATH')) exit;
 
 // Verifica se o usuário tem permissão

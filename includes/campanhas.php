@@ -1,9 +1,5 @@
 <?php
 
-// includes/campanhas.php
-
-// ... (outros includes, se houver)
-
 function gma_criar_campanha($nome, $cliente, $categoria_id = null, $tipo_campanha = 'marketing', $status_campanha = 'rascunho') {
    if (!gma_verificar_licenca_ativa()) {
         return false;
@@ -227,9 +223,6 @@ function gma_excluir_campanha() {
     exit;
 }
 
-
-
-// Registrar a ação 'admin_post_gma_excluir_campanha'
 add_action('admin_post_gma_excluir_campanha', 'gma_excluir_campanha');
 
 ?>
