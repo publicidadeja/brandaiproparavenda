@@ -4,6 +4,12 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+add_action('init', 'gma_init_session');
+function gma_init_session() {
+    if (!session_id() && !headers_sent()) {
+        session_start();
+    }
+}
 
 add_action('admin_menu', 'gma_criar_menu_admin');
 
@@ -126,15 +132,12 @@ function gma_pagina_listar_materiais() {
 }
 
 function gma_pagina_novo_material() {
-    if (!session_id()) {
-        session_start();
-    }
-
     require_once GMA_PLUGIN_DIR . 'includes/materiais.php';
 
     $messages = array();
 
     if (isset($_POST['criar_material']) && wp_verify_nonce($_POST['gma_novo_material_nonce'], 'gma_novo_material')) {
+        // Verifica se a sessão existe e se o material não foi criado
         if (!isset($_SESSION['material_criado'])) {
             $campanha_id = intval($_POST['campanha_id']);
             $imagem_url = esc_url_raw($_POST['imagem_url']);
@@ -146,17 +149,26 @@ function gma_pagina_novo_material() {
 
             if ($resultado) {
                 $_SESSION['material_criado'] = true;
-                $messages[] = array('type' => 'success', 'message' => 'Material criado com sucesso!');
+                set_transient('gma_notificacao_admin', array(
+                    'tipo' => 'success',
+                    'mensagem' => 'Material criado com sucesso!'
+                ), 45);
+                wp_redirect(admin_url('admin.php?page=gma-materiais'));
+                exit;
             } else {
-                $messages[] = array('type' => 'error', 'message' => 'Erro ao criar o material. Por favor, tente novamente. Verifique o log de erros.');
+                $messages[] = array('type' => 'error', 'message' => 'Erro ao criar o material. Por favor, tente novamente.');
             }
         } else {
-            $messages[] = array('type' => 'warning', 'message' => 'Material já criado. Atualize a página.');
+            $messages[] = array('type' => 'warning', 'message' => 'Material já foi criado. Atualize a página.');
         }
     }
 
-    unset($_SESSION['material_criado']);
+    // Limpa a variável de sessão
+    if (isset($_SESSION['material_criado'])) {
+        unset($_SESSION['material_criado']);
+    }
 
+    // Exibe mensagens de erro, se houver
     foreach ($messages as $message) {
         echo '<div class="notice notice-' . $message['type'] . ' is-dismissible"><p>' . $message['message'] . '</p></div>';
     }
